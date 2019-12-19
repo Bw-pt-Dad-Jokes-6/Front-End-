@@ -1,8 +1,15 @@
 import React from "react";
-import "./App.css";
+import "./App.scss"
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <div 
+      className="App" 
+      onClick={(e)=>{console.log("yeeet")}}
+    >
+      Sthufffffff.
+    </div>
+  );
 }
 
 export default App;
