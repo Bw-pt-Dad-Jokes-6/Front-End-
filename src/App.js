@@ -1,21 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+
 import Login from './components/Login';
+import JokeList from './components/JokeList'
+import PrivateRoute from './components/PrivateRoute'
 
 import "./App.scss"
 
 function App() {
+
+
   return (
     <Router>
-      <div
-        className="App"
-        onClick={(e) => { console.log("yeeet") }}
-      >
-        <Route path='/'>
+      <>
+        <Route exact path='/'>
           <Login />
         </Route>
-
-      </div>
+        <PrivateRoute path='/jokes/' component={JokeList}/>
+      </>
     </Router>
   );
 }
