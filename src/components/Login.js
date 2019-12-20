@@ -33,7 +33,7 @@ const Login = (props) => {
 
   const handleRegister = (e) => {
     e.preventDefault()
-    axios.put(`${baseURL}${apiAuthRegisterUrlSlug}`, login)
+    axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login)
       .then((res) => {
         console.log(res)
         setBannerMessage("Registering")
