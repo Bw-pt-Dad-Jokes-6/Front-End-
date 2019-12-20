@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom'
 
 const Login = (props) => {
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
+  const [header] = useState({contentType: "application/json"})
 
   const [apiAuthLoginUrlSlug] = useState("api/auth/login/")
   const [apiAuthRegisterUrlSlug] = useState("api/auth/register/")
@@ -18,7 +19,7 @@ const Login = (props) => {
 
   const handleLogin = (e) => {
     e.preventDefault()
-    axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login)
+    axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login, header)
       .then((res) => {
         console.log(res)
         setBannerMessage("Logging In")
@@ -33,7 +34,7 @@ const Login = (props) => {
 
   const handleRegister = (e) => {
     e.preventDefault()
-    axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login)
+    axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login, header)
       .then((res) => {
         console.log(res)
         setBannerMessage("Registering")
