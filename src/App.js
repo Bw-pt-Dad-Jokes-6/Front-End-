@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Login from './components/Login';
@@ -16,7 +16,10 @@ function App() {
         <Route exact path='/'>
           <Login />
         </Route>
-        <PrivateRoute path='/jokes/' component={JokeList}/>
+        <Route path="/jokes/">
+          <JokeList />
+        </Route>
+        {/* <PrivateRoute path='/jokes/' component={JokeList}/> */}
       </Switch>
     </Router>
   );
