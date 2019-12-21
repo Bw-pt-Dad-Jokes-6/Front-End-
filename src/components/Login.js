@@ -1,11 +1,17 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 
 
 const Login = (props) => {
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
-  const [header] = useState({contentType: "application/json"})
+  const [header] = useState(
+    {
+      contentType: "application/json",
+      username: "",
+      password: ""
+    }
+  )
 
   const [apiAuthLoginUrlSlug] = useState("api/auth/login/")
   const [apiAuthRegisterUrlSlug] = useState("api/auth/register/")
@@ -17,9 +23,14 @@ const Login = (props) => {
 
   const [bannerMessage, setBannerMessage] = useState("Enter your username and Password")
 
+  // useEffect(()=>{
+  //   localStorage.clear()
+  // })
+
   const handleLogin = (e) => {
     e.preventDefault()
-    axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login, header)
+    console.log(login)
+    axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login + "", login)
       .then((res) => {
         console.log(res)
         setBannerMessage("Logging In")
@@ -34,7 +45,8 @@ const Login = (props) => {
 
   const handleRegister = (e) => {
     e.preventDefault()
-    axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login, header)
+    console.log(login)
+    axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login + "", login)
       .then((res) => {
         console.log(res)
         setBannerMessage("Registering")
@@ -44,6 +56,10 @@ const Login = (props) => {
         console.log(err)
         setBannerMessage("This should not happen... rick and morty loves submissions... write to them today")
       })
+  }
+
+  const handleChange = e => {
+    setLogin({...login, [e.target.name]: e.target.value})
   }
 
 
@@ -65,7 +81,7 @@ const Login = (props) => {
             name="username"
             value={login.username}
             onChange={e => {
-              setLogin([e.target.name], e.target.value);
+              handleChange(e)
             }}
           />
         </label>
@@ -77,7 +93,7 @@ const Login = (props) => {
             name="password"
             value={login.password}
             onChange={e => {
-              setLogin([e.target.name], e.target.value);
+              handleChange(e)
             }}
           />
         </label>
