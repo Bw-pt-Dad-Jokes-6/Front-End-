@@ -1,10 +1,14 @@
+
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
+import Formik from 'formik'
+
 
 
 const Login = (props) => {
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
+
   const [header] = useState(
     {
       contentType: "application/json",
@@ -15,7 +19,7 @@ const Login = (props) => {
 
   const [apiAuthLoginUrlSlug] = useState("api/auth/login/")
   const [apiAuthRegisterUrlSlug] = useState("api/auth/register/")
- 
+
   const [login, setLogin] = useState({
     username: "",
     password: ""
@@ -37,7 +41,7 @@ const Login = (props) => {
         localStorage.setItem('token', res.data.payload)
         props.history.push('/jokes/')
       })
-      .catch((err) =>{
+      .catch((err) => {
         console.log(err)
         setBannerMessage("Sorry that is an invalid login, did you mean to hit the register button?")
       })
@@ -52,7 +56,7 @@ const Login = (props) => {
         setBannerMessage("Registering")
         handleLogin(e)
       })
-      .catch((err) =>{
+      .catch((err) => {
         console.log(err)
         setBannerMessage("This should not happen... rick and morty loves submissions... write to them today")
       })
@@ -98,9 +102,9 @@ const Login = (props) => {
           />
         </label>
         <button type="submit">Login</button>
-        <button 
-          type="button" 
-          onClick={(e)=>{
+        <button
+          type="button"
+          onClick={(e) => {
             handleRegister(e)
           }}
         >
