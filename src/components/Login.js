@@ -1,12 +1,14 @@
 
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
-import Formik from 'formik'
+import { withFormik, Form, Field } from 'formik'
+import * as Yup from 'yup'
 
 
 
 const Login = (props) => {
+  console.log(props)
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
 
   const [header] = useState(
@@ -25,11 +27,23 @@ const Login = (props) => {
     password: ""
   });
 
-  const [bannerMessage, setBannerMessage] = useState("Enter your username and Password")
 
-  // useEffect(()=>{
-  //   localStorage.clear()
-  // })
+
+  const [bannerMessage, setBannerMessage] = useState("please enter username and password")
+
+  // if (props.errors.username === undefined) {
+  //   console.log(true)
+  // }
+
+  useEffect(() => {
+
+    if (props.errors.username === null) {
+      setBannerMessage(props.errors.username)
+    }
+    // props.errors.username ? setBannerMessage(props.errors.username) : setBannerMessage('2')
+    // props.errors.password ? setBannerMessage(`${bannerMessage} ${props.errors.password}`) : setBannerMessage(bannerMessage)
+    // setBannerMessage(`${props.errors.username} ${props.errors.password}`)
+  }, [props.errors.username, props.errors.password])
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -63,7 +77,7 @@ const Login = (props) => {
   }
 
   const handleChange = e => {
-    setLogin({...login, [e.target.name]: e.target.value})
+    props.setValues({ ...props.values, [e.target.name]: e.target.value })
   }
 
 
@@ -72,7 +86,7 @@ const Login = (props) => {
       <h2>
         {bannerMessage}
       </h2>
-      <form
+      <Form
         onSubmit={e => {
           handleLogin(e)
         }}
@@ -81,11 +95,13 @@ const Login = (props) => {
           htmlFor="username"
         >
           Username
-          <input
+          <Field
             name="username"
-            value={login.username}
+            type="email"
+            value={props.values.username}
             onChange={e => {
-              handleChange(e)
+              props.handleChange(e)
+              // setBannerMessage(`${props.errors.username}`)
             }}
           />
         </label>
@@ -93,11 +109,13 @@ const Login = (props) => {
           htmlFor="password"
         >
           Password
-          <input
+          <Field
             name="password"
-            value={login.password}
+            type="password"
+            value={props.values.password}
             onChange={e => {
-              handleChange(e)
+              props.handleChange(e)
+              // setBannerMessage(`${props.errors.password}`)
             }}
           />
         </label>
@@ -110,9 +128,22 @@ const Login = (props) => {
         >
           Register
         </button>
-      </form>
+      </Form>
     </>
   )
 }
 
-export default Login;
+const FormikLoginForm = withFormik({
+  mapPropsToValues(props) {
+    return {
+      username: props.username || "",
+      password: props.password || ""
+    }
+  },
+  validationSchema: Yup.object().shape({
+    username: Yup.string().email("Inside email").required("Enter your email"),
+    password: Yup.string().min(5).required("Enter your password")
+  })
+})(Login)
+
+export default FormikLoginForm;
