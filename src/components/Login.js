@@ -1,23 +1,16 @@
 
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Redirect } from 'react-router-dom'
 import { withFormik, Form, Field } from 'formik'
+import cogoToast from 'cogo-toast'
 import * as Yup from 'yup'
+
 
 
 
 const Login = (props) => {
   console.log(props)
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
-
-  const [header] = useState(
-    {
-      contentType: "application/json",
-      username: "",
-      password: ""
-    }
-  )
 
   const [apiAuthLoginUrlSlug] = useState("api/auth/login/")
   const [apiAuthRegisterUrlSlug] = useState("api/auth/register/")
@@ -29,21 +22,17 @@ const Login = (props) => {
 
 
 
-  const [bannerMessage, setBannerMessage] = useState("please enter username and password")
+  const [bannerMessage, setBannerMessage] = useState("Please enter your e-mail and password")
 
-  // if (props.errors.username === undefined) {
-  //   console.log(true)
-  // }
+  
 
   useEffect(() => {
+    typeof props.errors.username === 'undefined' ? console.log('no error username') : cogoToast.warn(props.errors.username, {position: 'bottom-right'},)
+  }, [props.errors.username])
 
-    if (props.errors.username === null) {
-      setBannerMessage(props.errors.username)
-    }
-    // props.errors.username ? setBannerMessage(props.errors.username) : setBannerMessage('2')
-    // props.errors.password ? setBannerMessage(`${bannerMessage} ${props.errors.password}`) : setBannerMessage(bannerMessage)
-    // setBannerMessage(`${props.errors.username} ${props.errors.password}`)
-  }, [props.errors.username, props.errors.password])
+  useEffect(()=> {
+    typeof props.errors.password === 'undefined' ? console.log('no error password') : cogoToast.warn(props.errors.password, {position: 'bottom-right'},)
+  }, [props.errors.password])
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -57,7 +46,7 @@ const Login = (props) => {
       })
       .catch((err) => {
         console.log(err)
-        setBannerMessage("Sorry that is an invalid login, did you mean to hit the register button?")
+        cogoToast.success("Sorry, that login does not appear to be valid. Did you want to register instead?", {position: 'bottom-right'},)
       })
   }
 
@@ -67,12 +56,12 @@ const Login = (props) => {
     axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login + "", login)
       .then((res) => {
         console.log(res)
-        setBannerMessage("Registering")
+        cogoToast.success("Registering", {position: 'bottom-right'},)
         handleLogin(e)
       })
       .catch((err) => {
         console.log(err)
-        setBannerMessage("This should not happen... rick and morty loves submissions... write to them today")
+        cogoToast.warn("Registration was not successful, please call your friendly dad joke tech support", {position: 'bottom-right'},)
       })
   }
 
@@ -94,7 +83,7 @@ const Login = (props) => {
         <label
           htmlFor="username"
         >
-          Username
+          e-mail
           <Field
             name="username"
             type="email"
