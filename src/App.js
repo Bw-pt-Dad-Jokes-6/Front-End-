@@ -17,7 +17,7 @@ function App() {
           <Login />
           <DevelopmentEdition />
         </Route>
-         <PrivateRoute path='/jokes/' component={JokeList}/>
+         <PrivateRoute path='/jokes' component={JokeList}/>
       </Switch>
     </Router>
   );
