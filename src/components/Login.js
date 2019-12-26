@@ -44,13 +44,13 @@ const Login = (props) => {
     axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login + "", login)
       .then((res) => {
         console.log(res)
-        setBannerMessage("Logging In")
+        cogoToast.success("Logging In" , {position: 'bottom-right'},)
         localStorage.setItem('token', res.data.payload)
         props.history.push('/jokes/')
       })
       .catch((err) => {
         console.log(err)
-        cogoToast.success("Sorry, that login does not appear to be valid. Did you want to register instead?", {position: 'bottom-right'},)
+        cogoToast.error("Sorry, that login does not appear to be valid. Did you want to register instead?", {position: 'bottom-right'},)
       })
   }
 
@@ -65,7 +65,7 @@ const Login = (props) => {
       })
       .catch((err) => {
         console.log(err)
-        cogoToast.warn("Registration was not successful, please call your friendly dad joke tech support", {position: 'bottom-right'},)
+        cogoToast.error("Registration was not successful, please call your friendly dad joke tech support", {position: 'bottom-right'},)
       })
   }
 
