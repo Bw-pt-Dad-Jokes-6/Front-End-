@@ -12,8 +12,8 @@ const JokeList = (props) => {
     [
       {field: "setup", title: "Setup"},
       {field: "punchline", title: "Punchline"},
-      {field: "type", title: "Category"},
-      {field: "id", title: "Joke Number"}
+      //{field: "type", title: "Category"},
+      //{field: "id", title: "Joke Number"}
     ]
     )
 

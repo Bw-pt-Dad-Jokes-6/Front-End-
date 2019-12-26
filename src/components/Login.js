@@ -9,8 +9,12 @@ import * as Yup from 'yup'
 
 
 const Login = (props) => {
+
+  console.log(localStorage.getItem('token'))
+
   console.log(props)
-  const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
+  //const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
+  const [baseURL] = useState("http://localhost:5000/")
 
   const [apiAuthLoginUrlSlug] = useState("api/auth/login/")
   const [apiAuthRegisterUrlSlug] = useState("api/auth/register/")
@@ -66,7 +70,7 @@ const Login = (props) => {
   }
 
   const handleChange = e => {
-    props.setValues({ ...props.values, [e.target.name]: e.target.value })
+    setLogin({ ...login, [e.target.name]: e.target.value })
   }
 
 
@@ -87,9 +91,10 @@ const Login = (props) => {
           <Field
             name="username"
             type="email"
-            value={props.values.username}
+            // value={props.values.username}
+            value={login.username}
             onChange={e => {
-              props.handleChange(e)
+              handleChange(e)
               // setBannerMessage(`${props.errors.username}`)
             }}
           />
@@ -101,9 +106,10 @@ const Login = (props) => {
           <Field
             name="password"
             type="password"
-            value={props.values.password}
+            //value={props.values.password}
+            value={login.password}
             onChange={e => {
-              props.handleChange(e)
+              handleChange(e)
               // setBannerMessage(`${props.errors.password}`)
             }}
           />
