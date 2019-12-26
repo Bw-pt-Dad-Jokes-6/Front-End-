@@ -8,18 +8,16 @@ import PrivateRoute from './components/PrivateRoute'
 import "./App.scss"
 
 function App() {
-
-
+  console.log(localStorage.getItem('token'))
   return (
     <Router>
       <Switch>
         <Route exact path='/'>
           <Login />
         </Route>
-        <Route path="/jokes/">
-          <JokeList />
-        </Route>
-        {/* <PrivateRoute path='/jokes/' component={JokeList}/> */}
+         <PrivateRoute path='/jokes/'>
+           <JokeList />
+         </PrivateRoute>
       </Switch>
     </Router>
   );
