@@ -1,11 +1,13 @@
 import React from 'react'
 import cogoToast from 'cogo-toast'
+import {Link} from 'react-router-dom'
 
 
 const DevelopmentEdition = () => {
   return(
     <div>
         <div>Development Edition</div>
+        <Link to='jokes'>To Jokes</Link>
         <div
           onClick={()=>
             {
