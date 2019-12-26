@@ -80,6 +80,7 @@ const Login = (props) => {
         {bannerMessage}
       </h2>
       <Form
+        className="loginForm"
         onSubmit={e => {
           handleLogin(e)
         }}
@@ -94,7 +95,8 @@ const Login = (props) => {
             // value={props.values.username}
             value={login.username}
             onChange={e => {
-              handleChange(e)
+              handleChange(e)              
+              props.handleChange(e)
               // setBannerMessage(`${props.errors.username}`)
             }}
           />
@@ -110,6 +112,7 @@ const Login = (props) => {
             value={login.password}
             onChange={e => {
               handleChange(e)
+              props.handleChange(e)
               // setBannerMessage(`${props.errors.password}`)
             }}
           />
@@ -136,7 +139,7 @@ const FormikLoginForm = withFormik({
     }
   },
   validationSchema: Yup.object().shape({
-    username: Yup.string().email("Inside email").required("Enter your email"),
+    username: Yup.string().email("Must be Formatted ???@???.???").required("Enter your email"),
     password: Yup.string().min(5).required("Enter your password")
   })
 })(Login)
