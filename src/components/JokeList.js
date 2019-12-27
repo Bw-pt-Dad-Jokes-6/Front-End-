@@ -47,10 +47,7 @@ const JokeList = (props) => {
 
       <MaterialTable
         title={`Dad Jokes`}
-        options={{
-          dense: true,
-          exportButton: true
-        }}
+        
         components={{
           Toolbar: props => <MTableToolbar {...props} />
         }}
@@ -58,6 +55,25 @@ const JokeList = (props) => {
         columns={columns}
 
         data={jokes}
+
+        actions={[
+          {
+            icon: 'add',
+            tooltip: 'Add Joke',
+            isFreeAction: true,
+            onClick: (event) => console.log("You want to add a new joke")
+          },
+          {
+            icon: 'edit',
+            tooltip: 'Edit Joke',
+            onClick: (event, rowData) => console.log(`You want to edit "${rowData.setup}" joke`)
+          },
+          {
+            icon: 'delete',
+            tooltip: 'Delete Joke',
+            onClick: (event, rowData) => console.log(`You want to delete "${rowData.setup}" joke`)
+          }
+        ]}
         
       />
     </div>
