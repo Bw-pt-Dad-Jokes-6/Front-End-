@@ -1,27 +1,24 @@
 
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
 import { withFormik, Form, Field } from 'formik'
 import cogoToast from 'cogo-toast'
 import * as Yup from 'yup'
 
-
-
-
 const Login = (props) => {
 
-  console.log(localStorage.getItem('token'))
+  console.log(`token is ${localStorage.getItem('token')}`)
 
   console.log(props)
-  //const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
-  const [baseURL] = useState("http://localhost:5000/")
-
+  const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
+  
   const [apiAuthLoginUrlSlug] = useState("api/auth/login/")
   const [apiAuthRegisterUrlSlug] = useState("api/auth/register/")
 
   const [login, setLogin] = useState({
-    username: "",
-    password: ""
+    "username": "",
+    "password": ""
   });
 
 
@@ -41,11 +38,11 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault()
     console.log(login)
-    axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login + "", login)
+    axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login)
       .then((res) => {
         console.log(res)
         cogoToast.success("Logging In" , {position: 'bottom-right'},)
-        localStorage.setItem('token', res.data.payload)
+        localStorage.setItem('token', res.data.token)
         props.history.push('/jokes/')
       })
       .catch((err) => {
@@ -57,7 +54,7 @@ const Login = (props) => {
   const handleRegister = (e) => {
     e.preventDefault()
     console.log(login)
-    axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login + "", login)
+    axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login)
       .then((res) => {
         console.log(res)
         cogoToast.success("Registering", {position: 'bottom-right'},)
@@ -76,57 +73,65 @@ const Login = (props) => {
 
   return (
     <>
-      <h2>
-        {bannerMessage}
-      </h2>
-      <Form
-        className="loginForm"
-        onSubmit={e => {
-          handleLogin(e)
-        }}
-      >
-        <label
-          htmlFor="username"
-        >
-          e-mail
-          <Field
-            name="username"
-            type="email"
-            // value={props.values.username}
-            value={login.username}
-            onChange={e => {
-              handleChange(e)              
-              props.handleChange(e)
-              // setBannerMessage(`${props.errors.username}`)
-            }}
-          />
-        </label>
-        <label
-          htmlFor="password"
-        >
-          Password
-          <Field
-            name="password"
-            type="password"
-            //value={props.values.password}
-            value={login.password}
-            onChange={e => {
-              handleChange(e)
-              props.handleChange(e)
-              // setBannerMessage(`${props.errors.password}`)
-            }}
-          />
-        </label>
-        <button type="submit">Login</button>
-        <button
-          type="button"
-          onClick={(e) => {
-            handleRegister(e)
+      {
+        localStorage.getItem('token')?(
+          <Redirect to="/jokes/" />
+        ):(
+        <>
+        <h2>
+          {bannerMessage}
+        </h2>
+        <Form
+          className="loginForm"
+          onSubmit={e => {
+            handleLogin(e)
           }}
         >
-          Register
-        </button>
-      </Form>
+          <label
+            htmlFor="username"
+          >
+            e-mail
+            <Field
+              name="username"
+              type="email"
+              // value={props.values.username}
+              value={login.username}
+              onChange={e => {
+                handleChange(e)              
+                props.handleChange(e)
+                // setBannerMessage(`${props.errors.username}`)
+              }}
+            />
+          </label>
+          <label
+            htmlFor="password"
+          >
+            Password
+            <Field
+              name="password"
+              type="password"
+              //value={props.values.password}
+              value={login.password}
+              onChange={e => {
+                handleChange(e)
+                props.handleChange(e)
+                // setBannerMessage(`${props.errors.password}`)
+              }}
+            />
+          </label>
+          <button type="submit">Login</button>
+          <button
+            type="button"
+            onClick={(e) => {
+              handleRegister(e)
+            }}
+          >
+            Register
+          </button>
+        </Form>
+        </>
+        )
+      }
     </>
   )
 }
