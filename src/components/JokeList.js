@@ -17,6 +17,19 @@ const JokeList = (props) => {
     ]
     )
 
+    const [fish, setFish] = useState(
+      [
+        {
+          fishName: "plecostomus",
+          scientificName: "whothehellknowsimus",
+        },
+        {
+          fishName: "",
+          scientificName: ""
+        }
+      ]
+    )
+
 
   useEffect(() => {
     axios
