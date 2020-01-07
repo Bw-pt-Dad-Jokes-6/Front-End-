@@ -17,20 +17,6 @@ const JokeList = (props) => {
     ]
     )
 
-    const [fish, setFish] = useState(
-      [
-        {
-          fishName: "plecostomus",
-          scientificName: "whothehellknowsimus",
-        },
-        {
-          fishName: "",
-          scientificName: ""
-        }
-      ]
-    )
-
-
   useEffect(() => {
     axios
       .get("https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes/10")
