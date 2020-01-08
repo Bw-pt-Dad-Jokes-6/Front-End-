@@ -43,7 +43,7 @@ const Login = (props) => {
         console.log(res)
         cogoToast.success("Logging In" , {position: 'bottom-right'},)
         localStorage.setItem('token', res.data.token)
-        //props.history.push('/jokes/')
+        (<Redirect to='/jokes/' />)
       })
       .catch((err) => {
         console.log(err)

@@ -3,6 +3,7 @@ import axios from 'axios'
 import MaterialTable, {MTableToolbar} from 'material-table'
 
 //import JokeCard from './JokeCard'
+import Header from './Header.js'
 
 
 
@@ -10,30 +11,17 @@ const JokeList = (props) => {
   const [jokes, setJokes] = useState([])
   const [columns] = useState(
     [
-      {field: "setup", title: "Setup"},
-      {field: "punchline", title: "Punchline"},
-      //{field: "type", title: "Category"},
-      //{field: "id", title: "Joke Number"}
+      {field: "joke_body", title: "Setup"},
+      {field: "punchline", title: "Punchline"}
     ]
     )
-
-    const [fish, setFish] = useState(
-      [
-        {
-          fishName: "plecostomus",
-          scientificName: "whothehellknowsimus",
-        },
-        {
-          fishName: "",
-          scientificName: ""
-        }
-      ]
-    )
-
+  const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
+  const [jokesSlug] = useState('api/jokes')
 
   useEffect(() => {
     axios
-      .get("https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes/10")
+      .get(baseURL+jokesSlug)
+      //.get("https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes/100")
       .then(res => {
         console.log(res.data);
         setJokes(res.data);
@@ -52,6 +40,8 @@ const JokeList = (props) => {
   }, [columns])
 
   return (
+    <>
+    <Header />
     <div>
 
       {/* {jokes.map(joke => {
@@ -84,12 +74,13 @@ const JokeList = (props) => {
           {
             icon: 'delete',
             tooltip: 'Delete Joke',
-            onClick: (event, rowData) => console.log(`You want to delete "${rowData.setup}" joke`)
+            onClick: (event, rowData) => console.log(rowData)
           }
         ]}
         
       />
     </div>
+    </>
   )
 }
 
