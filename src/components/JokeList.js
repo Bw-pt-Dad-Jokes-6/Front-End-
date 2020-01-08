@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import MaterialTable, {MTableToolbar} from 'material-table'
+import MaterialTable, { MTableToolbar } from 'material-table'
 
 //import JokeCard from './JokeCard'
 import Header from './Header.js'
@@ -14,19 +14,19 @@ const JokeList = (props) => {
   //used as the headers in Material-Table
   const [columns] = useState(
     [
-      {field: "joke_body", title: "Setup"},
-      {field: "punchline", title: "Punchline"}
+      { field: "joke_body", title: "Setup" },
+      { field: "punchline", title: "Punchline" }
     ]
   )
   //const [baseURL] = useState("https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes/50")
-      
+
   //our baseURL, with the joke slug for getting all jokes. 
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
   const [jokesSlug] = useState('api/jokes')
 
   useEffect(() => {
     axios
-      .get(baseURL+jokesSlug)
+      .get(baseURL + jokesSlug)
       .then(res => {
         console.log(res.data);
         setJokes(res.data);
@@ -44,49 +44,119 @@ const JokeList = (props) => {
     console.log(columns)
   }, [columns])
 
+  // return (
+  //   <>
+  //     <Header />
+  //     <div>
+
+  //       {/* {jokes.map(joke => {
+  //       return <JokeCard key={joke.id} setup={joke.setup} punchline={joke.punchline} type={joke.type} />
+  //     })} */}
+
+  //       <MaterialTable
+  //         title={`Dad Jokes`}
+
+  //         // components={{
+  //         //   Toolbar: props => <MTableToolbar {...props} />
+  //         // }}
+
+  //         columns={columns}
+
+  //         data={jokes}
+
+  //         actions={[
+  //           {
+  //             icon: 'add',
+  //             tooltip: 'Add Joke',
+  //             isFreeAction: true,
+  //             onClick: (event) => (<AddJokeForm />)
+  //           },
+  //           {
+  //             icon: 'edit',
+  //             tooltip: 'Edit Joke',
+  //             onClick: (event, rowData) => (<EditRow rowData={rowData} />)
+  //           },
+  //           {
+  //             icon: 'delete',
+  //             tooltip: 'Delete Joke',
+  //             onClick: (event, rowData) => console.log(rowData) //to be replaced by axios with auth
+  //           }
+  //         ]}
+
+  //       />
+  //     </div>
+  //   </>
+  // )
+
   return (
     <>
-    <Header />
-    <div>
+      <Header />
+      <div>
+        <MaterialTable
+          title={`Dad Jokes`}
+          columns={columns}
+          data={jokes}
 
-      {/* {jokes.map(joke => {
-        return <JokeCard key={joke.id} setup={joke.setup} punchline={joke.punchline} type={joke.type} />
-      })} */}
+          // actions={[
+          //   {
+          //     icon: 'add',
+          //     tooltip: 'Add Joke',
+          //     isFreeAction: true,
+          //     onClick: (event) => (<AddJokeForm />)
+          //   }
+          // ]}
 
-      <MaterialTable
-        title={`Dad Jokes`}
-        
-        components={{
-          Toolbar: props => <MTableToolbar {...props} />
-        }}
-        
-        columns={columns}
-
-        data={jokes}
-
-        actions={[
-          {
-            icon: 'add',
-            tooltip: 'Add Joke',
-            isFreeAction: true,
-            onClick: (event) => (<AddJokeForm  />)
-          },
-          {
-            icon: 'edit',
-            tooltip: 'Edit Joke',
-            onClick: (event, rowData) => (<EditRow rowData={rowData} />)
-          },
-          {
-            icon: 'delete',
-            tooltip: 'Delete Joke',
-            onClick: (event, rowData) => console.log(rowData) //to be replaced by axios with auth
-          }
-        ]}
-        
-      />
-    </div>
+          editable={{
+            onRowAdd: newJoke =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  setJokes(prevJokes => {
+                    const data = [...prevJokes];
+                    console.log(data)
+                    data.push(newJoke);
+                    console.log(newJoke);
+                    return { data };
+                  })
+                  resolve();
+                }, 600);
+              }),
+            // onRowUpdate: (newJoke, oldJoke) =>
+            //   new Promise(resolve => {
+            //     setTimeout(() => {
+            //       resolve();
+            //       const joke = [...jokes];
+            //       joke[joke.indexOf(oldJoke)] = newJoke;
+            //       axios
+            //         .put(`${baseURL}${jokesSlug}/edit/${joke.id}`, newJoke, {
+            //           params: {
+            //             id: jokes[0].id
+            //           }
+            //         })
+            //         .then(res => console.log(res.joke));
+            //       setJokes({ ...jokes, joke });
+            //     }, 600);
+            //   }),
+            // onRowDelete: oldJoke =>
+            //   new Promise(resolve => {
+            //     setTimeout(() => {
+            //       resolve();
+            //       const data = [...jokes];
+            //       data.splice(data.indexOf(oldJoke), 1);
+            //       axios
+            //         .delete(baseURL + jokesSlug, {
+            //           params: {
+            //             id: jokes[0].id
+            //           }
+            //         })
+            //         .then(res => console.log(res.data));
+            //       setJokes({ ...jokes, data });
+            //     }, 600);
+            //   })
+          }}
+        />
+      </div>
     </>
-  )
+  );
 }
 
 export default JokeList
