@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/Login';
 import JokeList from './components/JokeList'
 import PrivateRoute from './components/PrivateRoute'
-import Header from './components/Header.js'
+
 
 import "./App.scss"
 
@@ -16,10 +16,7 @@ function App() {
         <Route exact path='/'>
           <Login />
         </Route>
-          <PrivateRoute path='/jokes'>
-            <Header />
-            <JokeList />
-          </PrivateRoute>
+        <PrivateRoute path='/jokes' component={JokeList} />
       </Switch>
     </Router>
   );

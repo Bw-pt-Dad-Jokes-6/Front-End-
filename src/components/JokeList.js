@@ -3,6 +3,7 @@ import axios from 'axios'
 import MaterialTable, {MTableToolbar} from 'material-table'
 
 //import JokeCard from './JokeCard'
+import Header from './Header.js'
 
 
 
@@ -38,6 +39,8 @@ const JokeList = (props) => {
   }, [columns])
 
   return (
+    <>
+    <Header />
     <div>
 
       {/* {jokes.map(joke => {
@@ -76,6 +79,7 @@ const JokeList = (props) => {
         
       />
     </div>
+    </>
   )
 }
 
