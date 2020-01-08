@@ -4,24 +4,29 @@ import MaterialTable, {MTableToolbar} from 'material-table'
 
 //import JokeCard from './JokeCard'
 import Header from './Header.js'
+import AddJokeForm from './AddJokeForm'
+import EditRow from './EditRow'
 
 
 
 const JokeList = (props) => {
   const [jokes, setJokes] = useState([])
+  //used as the headers in Material-Table
   const [columns] = useState(
     [
       {field: "joke_body", title: "Setup"},
       {field: "punchline", title: "Punchline"}
     ]
-    )
+  )
+  //const [baseURL] = useState("https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes/50")
+      
+  //our baseURL, with the joke slug for getting all jokes. 
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
   const [jokesSlug] = useState('api/jokes')
 
   useEffect(() => {
     axios
       .get(baseURL+jokesSlug)
-      //.get("https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes/100")
       .then(res => {
         console.log(res.data);
         setJokes(res.data);
@@ -64,17 +69,17 @@ const JokeList = (props) => {
             icon: 'add',
             tooltip: 'Add Joke',
             isFreeAction: true,
-            onClick: (event) => console.log("You want to add a new joke")
+            onClick: (event) => (<AddJokeForm  />)
           },
           {
             icon: 'edit',
             tooltip: 'Edit Joke',
-            onClick: (event, rowData) => console.log(`You want to edit "${rowData.setup}" joke`)
+            onClick: (event, rowData) => (<EditRow rowData={rowData} />)
           },
           {
             icon: 'delete',
             tooltip: 'Delete Joke',
-            onClick: (event, rowData) => console.log(rowData)
+            onClick: (event, rowData) => console.log(rowData) //to be replaced by axios with auth
           }
         ]}
         
