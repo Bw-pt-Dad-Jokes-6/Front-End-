@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import MaterialTable, { MTableToolbar } from 'material-table'
+import MaterialTable from 'material-table'
 import cogoToast from 'cogo-toast'
 
 //import JokeCard from './JokeCard'
@@ -41,7 +41,7 @@ const JokeList = (props) => {
       .catch(err => {
         console.log("uh-oh there was an error", err)
       })
-  }, [updater])
+  }, [baseURL, jokesSlug, updater])
 
   useEffect(() => {
     console.log(jokes)

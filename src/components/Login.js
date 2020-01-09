@@ -23,7 +23,7 @@ const Login = (props) => {
 
 
 
-  const [bannerMessage, setBannerMessage] = useState("Please enter your e-mail and password")
+  const [bannerMessage] = useState("Please enter your e-mail and password")
 
   
 
