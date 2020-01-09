@@ -1,59 +1,64 @@
-
-import React, { useState, useEffect } from 'react'
+//dependencies
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
 import { withFormik, Form, Field } from 'formik'
 import cogoToast from 'cogo-toast'
 import * as Yup from 'yup'
 
-
-
+//modules
+import {APIContext} from '../contexts/APIContext'
+import {UserContext} from '../contexts/UserContext'
+import Header from './Header'
 
 const Login = (props) => {
-  console.log(props)
-  const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
 
-  const [apiAuthLoginUrlSlug] = useState("api/auth/login/")
-  const [apiAuthRegisterUrlSlug] = useState("api/auth/register/")
-
+  //context destructuring
+  const {baseURL, apiAuthLoginUrlSlug, apiAuthRegisterUrlSlug} = useContext(APIContext)
+  const {setUserState} = useContext(UserContext)
+  
+  //initial data for the login values in form
   const [login, setLogin] = useState({
-    username: "",
-    password: ""
+    "username": "",
+    "password": ""
   });
 
-
-
-  const [bannerMessage, setBannerMessage] = useState("Please enter your e-mail and password")
-
+  //banner message for the login page
+  const [bannerMessage] = useState("Please enter your e-mail and password")
   
-
+  //username useEffect
   useEffect(() => {
-    typeof props.errors.username === 'undefined' ? console.log('no error username') : cogoToast.warn(props.errors.username, {position: 'bottom-right'},)
+    typeof props.errors.username === 'undefined' ? console.log('valid or empty username') : cogoToast.warn(props.errors.username, {position: 'bottom-right'},)
   }, [props.errors.username])
 
+  //password useEffect
   useEffect(()=> {
-    typeof props.errors.password === 'undefined' ? console.log('no error password') : cogoToast.warn(props.errors.password, {position: 'bottom-right'},)
+    typeof props.errors.password === 'undefined' ? console.log('valid or empty password') : cogoToast.warn(props.errors.password, {position: 'bottom-right'},)
   }, [props.errors.password])
 
+  //login handler
   const handleLogin = (e) => {
     e.preventDefault()
-    console.log(login)
-    axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login + "", login)
+    //console.log(login)
+    axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login)
       .then((res) => {
-        console.log(res)
-        setBannerMessage("Logging In")
-        localStorage.setItem('token', res.data.payload)
-        props.history.push('/jokes/')
+        //console.log(res)
+        cogoToast.success("Logging In" , {position: 'bottom-right'},)
+        localStorage.setItem('token', res.data.token)
+        setUserState(res)
+        //console.log(userState)        
       })
       .catch((err) => {
         console.log(err)
-        cogoToast.success("Sorry, that login does not appear to be valid. Did you want to register instead?", {position: 'bottom-right'},)
+        cogoToast.error("Sorry, that login does not appear to be valid. Did you want to register instead?", {position: 'bottom-right'},)
       })
   }
 
+  //register handler
   const handleRegister = (e) => {
     e.preventDefault()
     console.log(login)
-    axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login + "", login)
+    axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login)
       .then((res) => {
         console.log(res)
         cogoToast.success("Registering", {position: 'bottom-right'},)
@@ -61,63 +66,85 @@ const Login = (props) => {
       })
       .catch((err) => {
         console.log(err)
-        cogoToast.warn("Registration was not successful, please call your friendly dad joke tech support", {position: 'bottom-right'},)
+        cogoToast.error("Registration was not successful, please call your friendly dad joke tech support", {position: 'bottom-right'},)
       })
   }
 
+  // form data change handler
   const handleChange = e => {
-    props.setValues({ ...props.values, [e.target.name]: e.target.value })
+    setLogin({ ...login, [e.target.name]: e.target.value })
   }
 
 
   return (
     <>
-      <h2>
-        {bannerMessage}
-      </h2>
-      <Form
-        onSubmit={e => {
-          handleLogin(e)
-        }}
-      >
-        <label
-          htmlFor="username"
-        >
-          e-mail
-          <Field
-            name="username"
-            type="email"
-            value={props.values.username}
-            onChange={e => {
-              props.handleChange(e)
-              // setBannerMessage(`${props.errors.username}`)
-            }}
-          />
-        </label>
-        <label
-          htmlFor="password"
-        >
-          Password
-          <Field
-            name="password"
-            type="password"
-            value={props.values.password}
-            onChange={e => {
-              props.handleChange(e)
-              // setBannerMessage(`${props.errors.password}`)
-            }}
-          />
-        </label>
-        <button type="submit">Login</button>
-        <button
-          type="button"
-          onClick={(e) => {
-            handleRegister(e)
-          }}
-        >
-          Register
-        </button>
-      </Form>
+      {
+        localStorage.getItem('token')?(
+          <Redirect to="/jokes/" />
+        ):(
+        <>
+          <Header />
+          <article>
+            <section>
+              <div>Put Joke List Here</div>
+            </section>
+            <section>
+              <h2>
+                {bannerMessage}
+              </h2>
+              <Form
+                className="loginForm"
+                onSubmit={e => {
+                  handleLogin(e)
+                }}
+              >
+                <label
+                  htmlFor="username"
+                >
+                  e-mail
+                  <Field
+                    name="username"
+                    type="email"
+                    // value={props.values.username}
+                    value={login.username}
+                    onChange={e => {
+                      handleChange(e)              
+                      props.handleChange(e)
+                      // setBannerMessage(`${props.errors.username}`)
+                    }}
+                  />
+                </label>
+                <label
+                  htmlFor="password"
+                >
+                  Password
+                  <Field
+                    name="password"
+                    type="password"
+                    //value={props.values.password}
+                    value={login.password}
+                    onChange={e => {
+                      handleChange(e)
+                      props.handleChange(e)
+                      // setBannerMessage(`${props.errors.password}`)
+                    }}
+                  />
+                </label>
+                <button type="submit">Login</button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    handleRegister(e)
+                  }}
+                >
+                  Register
+                </button>
+              </Form>
+            </section>
+          </article>
+        </>
+        )
+      }
     </>
   )
 }
@@ -130,7 +157,7 @@ const FormikLoginForm = withFormik({
     }
   },
   validationSchema: Yup.object().shape({
-    username: Yup.string().email("Inside email").required("Enter your email"),
+    username: Yup.string().email("Must be Formatted ???@???.???").required("Enter your email"),
     password: Yup.string().min(5).required("Enter your password")
   })
 })(Login)
