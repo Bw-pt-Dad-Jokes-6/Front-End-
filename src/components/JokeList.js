@@ -8,6 +8,8 @@ import cogoToast from 'cogo-toast'
 import Header from './Header.js'
 import axiosWithAuth from './axiosWithAuth.js'
 import {APIContext} from '../contexts/APIContext'
+//import{UserContext} from '../contexts/UserContext'
+
 
 // our initial joke source while we were waiting on the back end
 // https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes/50
@@ -25,15 +27,38 @@ const JokeList = () => {
     updater, 
     setUpdater} = useContext(APIContext)
 
+    //const {userState} = useContext(UserContext)
+
   const [jokes, setJokes] = useState([])
   //used as the headers in Material-Table
   const [columns] = useState(
     [
-      { field: "joke_body", title: "Setup" },
-      { field: "punchline", title: "Punchline" }
+      { 
+        field: "joke_body", 
+        title: "Setup",
+        cellStyle: {
+          backgroundColor: '#f0e3ff',
+        },
+        headerStyle: {
+          backgroundColor: '#d89cf6',
+          color: '#FFF'
+        }
+      },
+      { 
+        field: "punchline", 
+        title: "Punchline",
+        cellStyle: {
+          backgroundColor: '#916dd5',
+          color: '#FFF'
+        },
+        headerStyle: {
+          backgroundColor: '#3e206d',
+          color: '#FFF'
+        }
+      }
     ]
   )
-
+  
   useEffect(() => {
     axios
       .get(baseURL + jokesSlug)
@@ -94,6 +119,8 @@ const JokeList = () => {
       })
       .finally(() => setUpdater(!updater))
   }
+
+  
 
   return (
     <>

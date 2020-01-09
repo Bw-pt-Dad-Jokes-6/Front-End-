@@ -10,6 +10,7 @@ import * as Yup from 'yup'
 import {APIContext} from '../contexts/APIContext'
 import {UserContext} from '../contexts/UserContext'
 import Header from './Header'
+import HomeJokeList from './HomeJokeList'
 
 const Login = (props) => {
 
@@ -86,9 +87,6 @@ const Login = (props) => {
           <Header />
           <article>
             <section>
-              <div>Put Joke List Here</div>
-            </section>
-            <section>
               <h2>
                 {bannerMessage}
               </h2>
@@ -140,6 +138,9 @@ const Login = (props) => {
                   Register
                 </button>
               </Form>
+            </section>
+            <section>
+              <HomeJokeList />
             </section>
           </article>
         </>

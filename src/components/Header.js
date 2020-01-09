@@ -8,17 +8,22 @@ const Header = (props) => {
   const {updater, setUpdater} = useContext(APIContext)
 
   return(
-    localStorage.getItem("token") ?  (<div
-      onClick={(e)=>{
-        e.preventDefault()
-        localStorage.removeItem("token")
-        setUpdater(!updater)
-      }}
-    >Log Out</div>) : (
-      <div>
-        Link to marketing page
-      </div>
-    )
+    <header>
+      <nav>
+        {localStorage.getItem("token") ?  (
+          <div class="headerButton"
+            onClick={(e)=>{
+              e.preventDefault()
+              localStorage.removeItem("token")
+              setUpdater(!updater)
+            }}
+          >Log Out</div>) : (
+          <div class="headerButton">
+            Home
+          </div>
+        )}
+      </nav>
+    </header>
   )
 
 }
