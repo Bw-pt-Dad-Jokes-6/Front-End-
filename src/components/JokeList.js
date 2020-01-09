@@ -6,6 +6,7 @@ import MaterialTable, { MTableToolbar } from 'material-table'
 import Header from './Header.js'
 import AddJokeForm from './AddJokeForm'
 import EditRow from './EditRow'
+import axiosWithAuth from './axiosWithAuth.js'
 
 
 
@@ -23,6 +24,8 @@ const JokeList = (props) => {
   //our baseURL, with the joke slug for getting all jokes. 
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
   const [jokesSlug] = useState('api/jokes')
+  const [addJokeSlug] =useState('api/jokes/create')
+  const [updater, setUpdater] = useState(false)
 
   useEffect(() => {
     axios
@@ -34,7 +37,7 @@ const JokeList = (props) => {
       .catch(err => {
         console.log("uh-oh there was an error", err)
       })
-  }, [])
+  }, [updater])
 
   useEffect(() => {
     console.log(jokes)
@@ -113,9 +116,12 @@ const JokeList = (props) => {
                   setJokes(prevJokes => {
                     const data = [...prevJokes];
                     console.log(data)
-                    data.push(newJoke);
                     console.log(newJoke);
-                    return { data };
+                    axiosWithAuth().post(`${baseURL}${addJokeSlug}`, newJoke)
+                    .catch(err => {
+                      console.log("uh-oh there was an error", err)
+                    })
+                    setUpdater(!updater)
                   })
                   resolve();
                 }, 600);
