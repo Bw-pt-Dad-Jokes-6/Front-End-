@@ -37,7 +37,7 @@ const JokeList = () => {
       { field: "punchline", title: "Punchline" }
     ]
   )
-
+  
   useEffect(() => {
     axios
       .get(baseURL + jokesSlug)
