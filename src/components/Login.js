@@ -12,7 +12,7 @@ const Login = (props) => {
 
   console.log(props)
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
-  
+  //const [baseURL] = useState("http://localhost:5000/")
   const [apiAuthLoginUrlSlug] = useState("api/auth/login/")
   const [apiAuthRegisterUrlSlug] = useState("api/auth/register/")
 

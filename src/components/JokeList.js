@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import MaterialTable, { MTableToolbar } from 'material-table'
+import cogoToast from 'cogo-toast'
 
 //import JokeCard from './JokeCard'
 import Header from './Header.js'
-import AddJokeForm from './AddJokeForm'
-import EditRow from './EditRow'
+//import AddJokeForm from './AddJokeForm'
+//import EditRow from './EditRow'
+import axiosWithAuth from './axiosWithAuth.js'
 
 
 
@@ -22,7 +24,12 @@ const JokeList = (props) => {
 
   //our baseURL, with the joke slug for getting all jokes. 
   const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
+  //const [baseURL] = useState("http://localhost:5000/")
   const [jokesSlug] = useState('api/jokes')
+  const [addJokeSlug] = useState('api/jokes/create')
+  const [deleteJokeSlug] = useState('api/jokes/remove/')
+  const [updateJokeSlug] = useState('api/jokes/edit/')
+  const [updater, setUpdater] = useState(false)
 
   useEffect(() => {
     axios
@@ -34,7 +41,7 @@ const JokeList = (props) => {
       .catch(err => {
         console.log("uh-oh there was an error", err)
       })
-  }, [])
+  }, [updater])
 
   useEffect(() => {
     console.log(jokes)
@@ -44,49 +51,46 @@ const JokeList = (props) => {
     console.log(columns)
   }, [columns])
 
-  // return (
-  //   <>
-  //     <Header />
-  //     <div>
+  const addJoke = (newJoke) => {
+    axiosWithAuth()
+      .post(`${baseURL}${addJokeSlug}`, newJoke)
+      .then(res => { 
+        console.log(res)
+      })
+      .catch(err => {
+        console.log("uh-oh there was an error", err)
+      })
+      .finally(() => setUpdater(!updater))
+  }
 
-  //       {/* {jokes.map(joke => {
-  //       return <JokeCard key={joke.id} setup={joke.setup} punchline={joke.punchline} type={joke.type} />
-  //     })} */}
+  const deleteJoke = (jokeNumber) => {
+    axiosWithAuth()
+      .put(`${baseURL}${deleteJokeSlug}${jokeNumber}`)
+      .then(res => {
+        console.log(res)
+        res.data.Error ? cogoToast.warn("This is not your Joke: so you can't delete it", {position: 'bottom-right'},) : console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+        
+      })
+      .finally(() => setUpdater(!updater))
+  }
 
-  //       <MaterialTable
-  //         title={`Dad Jokes`}
-
-  //         // components={{
-  //         //   Toolbar: props => <MTableToolbar {...props} />
-  //         // }}
-
-  //         columns={columns}
-
-  //         data={jokes}
-
-  //         actions={[
-  //           {
-  //             icon: 'add',
-  //             tooltip: 'Add Joke',
-  //             isFreeAction: true,
-  //             onClick: (event) => (<AddJokeForm />)
-  //           },
-  //           {
-  //             icon: 'edit',
-  //             tooltip: 'Edit Joke',
-  //             onClick: (event, rowData) => (<EditRow rowData={rowData} />)
-  //           },
-  //           {
-  //             icon: 'delete',
-  //             tooltip: 'Delete Joke',
-  //             onClick: (event, rowData) => console.log(rowData) //to be replaced by axios with auth
-  //           }
-  //         ]}
-
-  //       />
-  //     </div>
-  //   </>
-  // )
+  const editJoke = (joke) => {
+    console.log(joke)
+    axiosWithAuth()
+      .put(`${baseURL}${updateJokeSlug}${joke.id}`, joke)
+      .then(res => {
+        console.log(res)
+        res.data.Error ? cogoToast.warn("This is not your Joke: so you can't edit it", {position: 'bottom-right'},) : console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+        
+      })
+      .finally(() => setUpdater(!updater))
+  }
 
   return (
     <>
@@ -97,61 +101,28 @@ const JokeList = (props) => {
           columns={columns}
           data={jokes}
 
-          // actions={[
-          //   {
-          //     icon: 'add',
-          //     tooltip: 'Add Joke',
-          //     isFreeAction: true,
-          //     onClick: (event) => (<AddJokeForm />)
-          //   }
-          // ]}
-
           editable={{
-            onRowAdd: newJoke =>
+            onRowAdd: newJoke => 
               new Promise(resolve => {
                 setTimeout(() => {
-                  setJokes(prevJokes => {
-                    const data = [...prevJokes];
-                    console.log(data)
-                    data.push(newJoke);
-                    console.log(newJoke);
-                    return { data };
-                  })
+                  addJoke(newJoke)
+                  resolve()
+                }, 600)
+              }),
+            onRowUpdate: (newJoke) =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  editJoke(newJoke)
                   resolve();
                 }, 600);
               }),
-            // onRowUpdate: (newJoke, oldJoke) =>
-            //   new Promise(resolve => {
-            //     setTimeout(() => {
-            //       resolve();
-            //       const joke = [...jokes];
-            //       joke[joke.indexOf(oldJoke)] = newJoke;
-            //       axios
-            //         .put(`${baseURL}${jokesSlug}/edit/${joke.id}`, newJoke, {
-            //           params: {
-            //             id: jokes[0].id
-            //           }
-            //         })
-            //         .then(res => console.log(res.joke));
-            //       setJokes({ ...jokes, joke });
-            //     }, 600);
-            //   }),
-            // onRowDelete: oldJoke =>
-            //   new Promise(resolve => {
-            //     setTimeout(() => {
-            //       resolve();
-            //       const data = [...jokes];
-            //       data.splice(data.indexOf(oldJoke), 1);
-            //       axios
-            //         .delete(baseURL + jokesSlug, {
-            //           params: {
-            //             id: jokes[0].id
-            //           }
-            //         })
-            //         .then(res => console.log(res.data));
-            //       setJokes({ ...jokes, data });
-            //     }, 600);
-            //   })
+            onRowDelete: oldJoke =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  deleteJoke(oldJoke.id)
+                  resolve();
+                }, 600);
+              })
           }}
         />
       </div>
