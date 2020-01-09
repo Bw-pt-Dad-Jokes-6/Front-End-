@@ -9,3 +9,22 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+header{
+  nav{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+
+    .headerButton {
+      padding: 1rem;
+      cursor: pointer;
+      background-color: #f0e3ff;
+      
+      &:hover{
+        background-color: #3e206d;
+        color: #f0e3ff;
+      }
+    }
+  }
+}
