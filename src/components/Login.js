@@ -18,7 +18,7 @@ const Login = (props) => {
   //context destructuring
   const {baseURL, apiAuthLoginUrlSlug, apiAuthRegisterUrlSlug} = useContext(APIContext)
   const {setUserState} = useContext(UserContext)
-  const {loginToggle} = useContext(UIContext)
+  const {loginToggle, setLoginToggle} = useContext(UIContext)
 
   //initial data for the login values in form
   const [login, setLogin] = useState({
@@ -48,6 +48,7 @@ const Login = (props) => {
         //console.log(res)
         cogoToast.success("Logging In" , {position: 'bottom-right'},)
         localStorage.setItem('token', res.data.token)
+        setLoginToggle(false)
         setUserState(res)
         //console.log(userState)        
       })
