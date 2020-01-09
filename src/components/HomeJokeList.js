@@ -13,8 +13,29 @@ const HomeJokeList = () => {
     //used as the headers in Material-Table
   const [columns] = useState(
       [
-        { field: "joke_body", title: "Setup" },
-        { field: "punchline", title: "Punchline" }
+        { 
+          field: "joke_body", 
+          title: "Setup",
+          cellStyle: {
+            backgroundColor: '#916dd5',
+            color: '#FFF'
+          },
+          headerStyle: {
+            backgroundColor: '#3e206d',
+            color: '#FFF'
+          }
+        },
+        { 
+          field: "punchline", 
+          title: "Punchline",
+          cellStyle: {
+            backgroundColor: '#f0e3ff',
+          },
+          headerStyle: {
+            backgroundColor: '#d89cf6',
+            color: '#FFF'
+          }
+        }
       ]
     )
   useEffect(() => {
