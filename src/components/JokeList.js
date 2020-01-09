@@ -1,17 +1,30 @@
-import React, { useState, useEffect } from 'react'
+// dependencies
+import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
-import MaterialTable, { MTableToolbar } from 'material-table'
+import MaterialTable from 'material-table'
 import cogoToast from 'cogo-toast'
 
-//import JokeCard from './JokeCard'
+// modules
 import Header from './Header.js'
-//import AddJokeForm from './AddJokeForm'
-//import EditRow from './EditRow'
 import axiosWithAuth from './axiosWithAuth.js'
+import {APIContext} from '../contexts/APIContext'
 
+// our initial joke source while we were waiting on the back end
+// https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes/50
+// gets 50 jokes
+// note, setup is used instead of joke_body
 
+const JokeList = () => {
 
-const JokeList = (props) => {
+  const {
+    baseURL, 
+    jokesSlug, 
+    addJokeSlug, 
+    deleteJokeSlug, 
+    updateJokeSlug, 
+    updater, 
+    setUpdater} = useContext(APIContext)
+
   const [jokes, setJokes] = useState([])
   //used as the headers in Material-Table
   const [columns] = useState(
@@ -20,16 +33,6 @@ const JokeList = (props) => {
       { field: "punchline", title: "Punchline" }
     ]
   )
-  //const [baseURL] = useState("https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes/50")
-
-  //our baseURL, with the joke slug for getting all jokes. 
-  const [baseURL] = useState("https://webpt7-dad-jokes.herokuapp.com/")
-  //const [baseURL] = useState("http://localhost:5000/")
-  const [jokesSlug] = useState('api/jokes')
-  const [addJokeSlug] = useState('api/jokes/create')
-  const [deleteJokeSlug] = useState('api/jokes/remove/')
-  const [updateJokeSlug] = useState('api/jokes/edit/')
-  const [updater, setUpdater] = useState(false)
 
   useEffect(() => {
     axios
@@ -41,7 +44,7 @@ const JokeList = (props) => {
       .catch(err => {
         console.log("uh-oh there was an error", err)
       })
-  }, [updater])
+  }, [baseURL, jokesSlug, updater])
 
   useEffect(() => {
     console.log(jokes)

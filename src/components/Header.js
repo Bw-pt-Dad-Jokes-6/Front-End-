@@ -1,17 +1,24 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
+import {APIContext} from '../contexts/APIContext'
 
 const Header = (props) => {
-  console.log(props)
+  //console.log(props)
+
+  const {updater, setUpdater} = useContext(APIContext)
 
   return(
-    <div
+    localStorage.getItem("token") ?  (<div
       onClick={(e)=>{
         e.preventDefault()
-        console.log(localStorage.getItem("token"))
         localStorage.removeItem("token")
+        setUpdater(!updater)
       }}
-    >this is sparta!!!!!</div>
+    >Log Out</div>) : (
+      <div>
+        Link to marketing page
+      </div>
+    )
   )
 
 }
