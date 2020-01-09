@@ -142,6 +142,7 @@ const Login = (props) => {
             <section>
               <HomeJokeList />
             </section>
+            <img src="https://images.unsplash.com/photo-1464998857633-50e59fbf2fe6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80" />
           </article>
         </>
         )

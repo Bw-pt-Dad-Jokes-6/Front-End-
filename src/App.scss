@@ -2,7 +2,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
+  background-color: #f0e3ff;
 }
 
 .loginForm {
@@ -19,7 +20,7 @@ header{
     .headerButton {
       padding: 1rem;
       cursor: pointer;
-      background-color: #f0e3ff;
+      background-color: #d89cf6;
       
       &:hover{
         background-color: #3e206d;
@@ -27,4 +28,10 @@ header{
       }
     }
   }
+}
+
+img {
+ width: 100%;
+ border-radius: 30px;
+ filter: grayscale(10%) sepia(100%) hue-rotate(200deg) opacity(.9);
 }
