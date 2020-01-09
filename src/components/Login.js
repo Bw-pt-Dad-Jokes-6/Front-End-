@@ -89,9 +89,19 @@ const Login = (props) => {
         <>
           <Header />
           <article>
-            <section className={ loginToggle ? '' : 'hidden'}>
+            <section className={ loginToggle ? 'modal' : 'modal hidden'}>
+              <div class="banner">
+                <div 
+                  className="headerButton close"
+                  onClick={()=>{
+                    setLoginToggle(false)
+                  }}
+                >
+                  &times;
+                </div>
+              </div>
               <h2>
-                {bannerMessage}
+                  {bannerMessage}
               </h2>
               <Form
                 className="loginForm"
