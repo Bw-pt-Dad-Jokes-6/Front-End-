@@ -125,3 +125,12 @@ img {
   display: none
 }
 
+@media (max-width: 800px) {
+  .modal{
+    left: 0%;
+    top: 0%;
+    width: 90%; /* Full width */
+    height: 90%; /* Full height */
+  }
+}
+
