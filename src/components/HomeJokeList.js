@@ -42,8 +42,8 @@ const HomeJokeList = () => {
     axios
       .get(baseURL + jokesSlug)
       .then(res => {
-        console.log(res.data);
-        setJokes(res.data);
+        console.log(res.data.filter(joke => joke.user !== 2));
+        setJokes(res.data.filter(joke => joke.user !== 2));
       })
       .catch(err => {
         console.log("uh-oh there was an error", err)
@@ -54,7 +54,10 @@ const HomeJokeList = () => {
     <MaterialTable
         title={`Dad Jokes`}
         options={{
-          dense: true,
+          pageSize: 5,
+          addRowPosition: "first",
+          actionsColumnIndex: 2,
+          emptyRowsWhenPaging: false,
         }}
         components={{
           Toolbar: props => <MTableToolbar {...props} />

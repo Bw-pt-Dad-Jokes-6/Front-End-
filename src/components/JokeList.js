@@ -27,7 +27,7 @@ const JokeList = () => {
     updater, 
     setUpdater} = useContext(APIContext)
 
-    //const {userState} = useContext(UserContext)
+  //const {userState} = useContext(UserContext)
 
   const [jokes, setJokes] = useState([])
   //used as the headers in Material-Table
@@ -63,8 +63,8 @@ const JokeList = () => {
     axios
       .get(baseURL + jokesSlug)
       .then(res => {
-        console.log(res.data);
-        setJokes(res.data);
+        console.log(res.data.filter(joke => joke.user !== 2));
+        setJokes(res.data.filter(joke => joke.user !== 2));
       })
       .catch(err => {
         console.log("uh-oh there was an error", err)
@@ -120,7 +120,7 @@ const JokeList = () => {
       .finally(() => setUpdater(!updater))
   }
 
-  
+  //console.log(userState)
 
   return (
     <>
@@ -130,7 +130,12 @@ const JokeList = () => {
           title={`Dad Jokes`}
           columns={columns}
           data={jokes}
-
+          options={{
+            pageSize: 5,
+            addRowPosition: "first",
+            actionsColumnIndex: 2,
+            emptyRowsWhenPaging: false,
+          }}
           editable={{
             onRowAdd: newJoke => 
               new Promise(resolve => {
