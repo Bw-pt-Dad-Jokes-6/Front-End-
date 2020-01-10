@@ -12,24 +12,18 @@ const Header = (props) => {
   return(
     <header>
       <nav>
-      <div 
+      <a href="https://dadjokes6marketingpage.netlify.com/"><div 
         className="headerButton"
-        onClick={(e)=>{
-          e.preventDefault()
-          console.log("click")
-        }}
+        
       >
         Home
-      </div>
-      <div 
+      </div></a>
+      <a href="https://dadjokes6marketingpage.netlify.com/about.html"><div 
         className="headerButton"
-        onClick={(e)=>{
-          e.preventDefault()
-          console.log("click")
-        }}
+        
       >
         About
-      </div>
+      </div></a>
         {localStorage.getItem("token") ?  (
           <div className="headerButton"
             onClick={(e)=>{
