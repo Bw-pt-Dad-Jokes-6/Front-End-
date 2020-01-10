@@ -36,7 +36,7 @@ function App() {
     [
       { 
         field: "joke_body", 
-        title: "Setup",
+        title: "Setup", 
         cellStyle: {
           backgroundColor: '#f0e3ff',
         },
