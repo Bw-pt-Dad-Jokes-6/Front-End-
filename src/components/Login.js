@@ -1,24 +1,24 @@
 //dependencies
 import React, { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { withFormik, Form, Field } from 'formik'
 import cogoToast from 'cogo-toast'
 import * as Yup from 'yup'
 
 //modules
-import {APIContext} from '../contexts/APIContext'
-import {UserContext} from '../contexts/UserContext'
-import {UIContext} from '../contexts/UIContext'
+import { APIContext } from '../contexts/APIContext'
+import { UserContext } from '../contexts/UserContext'
+import { UIContext } from '../contexts/UIContext'
 import Header from './Header'
 import HomeJokeList from './HomeJokeList'
 
 const Login = (props) => {
 
   //context destructuring
-  const {baseURL, apiAuthLoginUrlSlug, apiAuthRegisterUrlSlug} = useContext(APIContext)
-  const {setUserState} = useContext(UserContext)
-  const {loginToggle, setLoginToggle} = useContext(UIContext)
+  const { baseURL, apiAuthLoginUrlSlug, apiAuthRegisterUrlSlug } = useContext(APIContext)
+  const { setUserState } = useContext(UserContext)
+  const { loginToggle, setLoginToggle } = useContext(UIContext)
 
   //initial data for the login values in form
   const [login, setLogin] = useState({
@@ -27,16 +27,16 @@ const Login = (props) => {
   });
 
   //banner message for the login page
-  const [bannerMessage] = useState("Please enter your e-mail and password")
-  
+  const [bannerMessage] = useState("Please Enter Your E-mail and Password")
+
   //username useEffect
   useEffect(() => {
-    typeof props.errors.username === 'undefined' ? console.log('valid or empty username') : cogoToast.warn(props.errors.username, {position: 'bottom-right'},)
+    typeof props.errors.username === 'undefined' ? console.log('valid or empty username') : cogoToast.warn(props.errors.username, { position: 'bottom-right' })
   }, [props.errors.username])
 
   //password useEffect
-  useEffect(()=> {
-    typeof props.errors.password === 'undefined' ? console.log('valid or empty password') : cogoToast.warn(props.errors.password, {position: 'bottom-right'},)
+  useEffect(() => {
+    typeof props.errors.password === 'undefined' ? console.log('valid or empty password') : cogoToast.warn(props.errors.password, { position: 'bottom-right' })
   }, [props.errors.password])
 
   //login handler
@@ -46,7 +46,7 @@ const Login = (props) => {
     axios.post(`${baseURL}${apiAuthLoginUrlSlug}`, login)
       .then((res) => {
         //console.log(res)
-        cogoToast.success("Logging In" , {position: 'bottom-right'},)
+        cogoToast.success("Logging In", { position: 'bottom-right' })
         localStorage.setItem('token', res.data.token)
         setLoginToggle(false)
         setUserState(res)
@@ -54,7 +54,7 @@ const Login = (props) => {
       })
       .catch((err) => {
         console.log(err)
-        cogoToast.error("Sorry, that login does not appear to be valid. Did you want to register instead?", {position: 'bottom-right'},)
+        cogoToast.error("Sorry, that login does not appear to be valid. Did you want to register instead?", { position: 'bottom-right' })
       })
   }
 
@@ -65,12 +65,12 @@ const Login = (props) => {
     axios.post(`${baseURL}${apiAuthRegisterUrlSlug}`, login)
       .then((res) => {
         console.log(res)
-        cogoToast.success("Registering", {position: 'bottom-right'},)
+        cogoToast.success("Registering", { position: 'bottom-right' })
         handleLogin(e)
       })
       .catch((err) => {
         console.log(err)
-        cogoToast.error("Registration was not successful, please call your friendly dad joke tech support", {position: 'bottom-right'},)
+        cogoToast.error("Registration was not successful, please call your friendly dad joke tech support", { position: 'bottom-right' })
       })
   }
 
@@ -83,82 +83,89 @@ const Login = (props) => {
   return (
     <>
       {
-        localStorage.getItem('token')?(
+        localStorage.getItem('token') ? (
           <Redirect to="/jokes/" />
-        ):(
-        <>
-          <Header />
-          <article>
-            <section className={ loginToggle ? 'modal' : 'modal hidden'}>
-              <div class="banner">
-                <div 
-                  className="headerButton close"
-                  onClick={()=>{
-                    setLoginToggle(false)
-                  }}
-                >
-                  &times;
+        ) : (
+            <>
+              <Header />
+              <article>
+                <section className={loginToggle ? 'modal' : 'modal hidden'}>
+                  <div className="banner">
+                    <div
+                      className="headerButton close"
+                      onClick={() => {
+                        setLoginToggle(false)
+                      }}
+                    >
+                      &times;
                 </div>
-              </div>
-              <h2>
-                  {bannerMessage}
-              </h2>
-              <Form
-                className="loginForm"
-                onSubmit={e => {
-                  handleLogin(e)
-                }}
-              >
-                <label
-                  htmlFor="username"
-                >
-                  e-mail
-                  <Field
-                    name="username"
-                    type="email"
-                    // value={props.values.username}
-                    value={login.username}
-                    onChange={e => {
-                      handleChange(e)              
-                      props.handleChange(e)
-                      // setBannerMessage(`${props.errors.username}`)
+                  </div>
+                  <h2>
+                    {bannerMessage}
+                  </h2>
+                  <Form
+                    className="loginForm"
+                    onSubmit={e => {
+                      handleLogin(e)
                     }}
-                  />
-                </label>
-                <label
-                  htmlFor="password"
-                >
-                  Password
-                  <Field
-                    name="password"
-                    type="password"
-                    //value={props.values.password}
-                    value={login.password}
-                    onChange={e => {
-                      handleChange(e)
-                      props.handleChange(e)
-                      // setBannerMessage(`${props.errors.password}`)
-                    }}
-                  />
-                </label>
-                <button type="submit">Login</button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    handleRegister(e)
-                  }}
-                >
-                  Register
+                  >
+                    <div className="textbox-container">
+                      <label
+                        htmlFor="username"
+                      >
+                        E-mail
+                        </label>
+                      <Field
+                        className="form-textbox"
+                        name="username"
+                        type="email"
+                        // value={props.values.username}
+                        value={login.username}
+                        onChange={e => {
+                          handleChange(e)
+                          props.handleChange(e)
+                          // setBannerMessage(`${props.errors.username}`)
+                        }}
+                      />
+
+                    </div>
+                    <div className="textbox-container">
+                      <label
+                        htmlFor="password"
+                      >
+                        Password
+                        </label>
+                      <Field
+                        className="form-textbox"
+                        name="password"
+                        type="password"
+                        //value={props.values.password}
+                        value={login.password}
+                        onChange={e => {
+                          handleChange(e)
+                          props.handleChange(e)
+                          // setBannerMessage(`${props.errors.password}`)
+                        }}
+                      />
+                    </div>
+                    <button type="submit">Login</button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        handleRegister(e)
+                      }}
+                    >
+                      Register
                 </button>
-              </Form>
-            </section>
-            <section>
-              <HomeJokeList />
-            </section>
-            <img src="https://images.unsplash.com/photo-1464998857633-50e59fbf2fe6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80" alt="Father and Son Laughing a a joke" />
-          </article>
-        </>
-        )
+                  </Form>
+                </section>
+                <section>
+                  <HomeJokeList />
+                </section>
+                <img src="https://images.unsplash.com/photo-1464998857633-50e59fbf2fe6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80" alt="Father and Son Laughing a a joke" />
+              </article>
+            </>
+          )
       }
     </>
   )
