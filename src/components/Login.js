@@ -9,6 +9,7 @@ import * as Yup from 'yup'
 //modules
 import {APIContext} from '../contexts/APIContext'
 import {UserContext} from '../contexts/UserContext'
+import {UIContext} from '../contexts/UIContext'
 import Header from './Header'
 import HomeJokeList from './HomeJokeList'
 
@@ -17,7 +18,8 @@ const Login = (props) => {
   //context destructuring
   const {baseURL, apiAuthLoginUrlSlug, apiAuthRegisterUrlSlug} = useContext(APIContext)
   const {setUserState} = useContext(UserContext)
-  
+  const {loginToggle, setLoginToggle} = useContext(UIContext)
+
   //initial data for the login values in form
   const [login, setLogin] = useState({
     "username": "",
@@ -46,6 +48,7 @@ const Login = (props) => {
         //console.log(res)
         cogoToast.success("Logging In" , {position: 'bottom-right'},)
         localStorage.setItem('token', res.data.token)
+        setLoginToggle(false)
         setUserState(res)
         //console.log(userState)        
       })
@@ -86,9 +89,19 @@ const Login = (props) => {
         <>
           <Header />
           <article>
-            <section>
+            <section className={ loginToggle ? 'modal' : 'modal hidden'}>
+              <div class="banner">
+                <div 
+                  className="headerButton close"
+                  onClick={()=>{
+                    setLoginToggle(false)
+                  }}
+                >
+                  &times;
+                </div>
+              </div>
               <h2>
-                {bannerMessage}
+                  {bannerMessage}
               </h2>
               <Form
                 className="loginForm"
@@ -142,6 +155,7 @@ const Login = (props) => {
             <section>
               <HomeJokeList />
             </section>
+            <img src="https://images.unsplash.com/photo-1464998857633-50e59fbf2fe6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80" alt="Father and Son Laughing a a joke" />
           </article>
         </>
         )
