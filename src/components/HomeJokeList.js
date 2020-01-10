@@ -65,7 +65,7 @@ const HomeJokeList = () => {
 
         columns={columns}
 
-        data={jokes}
+        data={jokes.reverse()}
 
       />
   )
