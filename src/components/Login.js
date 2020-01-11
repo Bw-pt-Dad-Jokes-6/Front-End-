@@ -112,6 +112,7 @@ const Login = (props) => {
                     <div className="textbox-container">
                       <label
                         htmlFor="username"
+                        className="email-label"
                       >
                         E-mail
                         </label>
@@ -132,6 +133,7 @@ const Login = (props) => {
                     <div className="textbox-container">
                       <label
                         htmlFor="password"
+                        className="password-label"
                       >
                         Password
                         </label>
