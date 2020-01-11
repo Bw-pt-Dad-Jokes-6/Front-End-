@@ -129,7 +129,7 @@ const JokeList = () => {
         <MaterialTable
           title={`Dad Jokes`}
           columns={columns}
-          data={jokes}
+          data={jokes.reverse()}
           options={{
             pageSize: 5,
             addRowPosition: "first",
