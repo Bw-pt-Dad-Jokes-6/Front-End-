@@ -133,16 +133,24 @@ img {
     height: 90%; /* Full height */
     .loginForm{
       .textbox-container{
+        flex-direction: column;
         label {
-          font-size: .8rem;
+          font-size: 1.1rem;
           width: 20%;
-          padding-right: 5px;
+        }
+
+        .email-label {
+          padding-left: 20px;
         }
 
         .form-textbox{
           width:70%;
           font-size: 1rem;
         }
+      }
+
+      button {
+        width: 75%;
       }
     }
   }
